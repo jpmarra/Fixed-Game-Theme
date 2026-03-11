@@ -1,0 +1,1 @@
+/Users/jmarra/Projects/personal/fixed-game-store/AGENTS.md
