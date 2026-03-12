@@ -5,6 +5,7 @@
     "block": "Block",
     "blog": "Blog",
     "cart": "Cart",
+    "cart_drawer_items": "Cart drawer items",
     "collection": "Collection",
     "collections": "Collections",
     "collection_card": "Collection card",
@@ -23,6 +24,7 @@
     "password": "Password",
     "primary": "Primary",
     "product": "Product",
+    "product_grid": "Product grid",
     "row": "Row",
     "search": "Search",
     "secondary": "Secondary",
@@ -34,13 +36,18 @@
     "typography": "Typography"
   },
   "labels": {
+    "accent": "Accent",
     "alignment": "Alignment",
     "background": "Background",
+    "columns_desktop": "Columns on desktop",
     "foreground": "Foreground",
     "grid_gap": "Grid spacing",
     "grid_item_width": "Grid item width",
+    "hero_logo": "Hero logo",
     "input_corner_radius": "Input corner radius",
     "layout_direction": "Layout direction",
+    "logo": "Logo",
+    "logo_max_width": "Logo max width",
     "menu": "Menu",
     "customer_account_menu": "Customer account menu",
     "padding": "Padding",
@@ -72,6 +79,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

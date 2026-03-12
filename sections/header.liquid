@@ -1,28 +1,25 @@
 <header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
-
   <div class="header__menu">
     {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
+      <a href="{{ link.url }}">{{ link.title }}</a>
     {% endfor %}
   </div>
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
-
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
+  <div class="header__logo">
+    <a href="{{ routes.root_url }}">
+      {% if section.settings.logo %}
+        {{ section.settings.logo | image_url: width: section.settings.logo_max_width | image_tag }}
+      {% else %}
+        {{ shop.name }}
       {% endif %}
-
-      {{ 'icon-cart.svg' | inline_asset_content }}
     </a>
+  </div>
+
+  <div class="header__icons">
+    <button data-cart-drawer-open aria-label="{{ 'general.accessibility.close' | t }}">
+      <span class="header__cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      {{ 'icon-cart.svg' | inline_asset_content }}
+    </button>
   </div>
 </header>
 
@@ -33,27 +30,62 @@
     align-items: center;
     justify-content: space-between;
   }
-  header a {
-    position: relative;
+  .header__logo a {
     text-decoration: none;
     color: var(--color-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .header__logo img {
+    max-width: 100%;
+    height: auto;
+  }
+  .header__menu,
+  .header__icons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .header__menu a {
+    text-decoration: none;
+    color: var(--color-foreground);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+  header button[data-cart-drawer-open] {
+    position: relative;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-foreground);
+    cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
   }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
+  header button[data-cart-drawer-open]:hover {
+    background: none;
+    color: var(--color-accent);
   }
   header svg {
     width: 2rem;
   }
-  header .header__menu,
-  header .header__icons {
+  .header__cart-count {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-size: 0.625rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
   }
 {% endstylesheet %}
 
@@ -62,16 +94,25 @@
   "name": "t:general.header",
   "settings": [
     {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:labels.logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "t:labels.logo_max_width",
+      "default": 200
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu"
     },
-    {
-      "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
-    }
   ]
 }
 {% endschema %}

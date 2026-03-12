@@ -1,0 +1,85 @@
+{% if cart.item_count == 0 %}
+  <p class="cart-empty">{{ 'cart.empty' | t }}</p>
+{% else %}
+  <div class="cart-items">
+    {% for item in cart.items %}
+      <div class="cart-item">
+        <div class="cart-item__image">
+          {% if item.image %}
+            {{ item.image | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy' }}
+          {% endif %}
+        </div>
+        <div class="cart-item__details">
+          <a href="{{ item.url }}">{{ item.product.title }}</a>
+          {% if item.variant.title != 'Default Title' %}
+            <span class="cart-item__variant">{{ item.variant.title }}</span>
+          {% endif %}
+          <span class="cart-item__price">{{ item.final_line_price | money }}</span>
+          <div class="cart-item__qty">
+            <span>{{ 'cart.quantity' | t }}: {{ item.quantity }}</span>
+            <a href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .cart-empty {
+    text-align: center;
+    opacity: 0.5;
+    padding: 3rem 0;
+  }
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .cart-item {
+    display: flex;
+    gap: 1rem;
+  }
+  .cart-item__image {
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .cart-item__image img {
+    width: 100%;
+    height: auto;
+  }
+  .cart-item__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+  }
+  .cart-item__details a {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  .cart-item__variant {
+    opacity: 0.5;
+    font-size: 0.75rem;
+  }
+  .cart-item__price {
+    color: var(--color-accent);
+  }
+  .cart-item__qty {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+  .cart-item__qty a {
+    text-decoration: underline;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.cart_drawer_items",
+  "settings": []
+}
+{% endschema %}
