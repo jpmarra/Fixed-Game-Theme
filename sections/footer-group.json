@@ -15,8 +15,7 @@
       "type": "footer",
       "settings": {
         "logo": "shopify://shop_images/FIXED_GAME_TRIPLE_B_DEMON-Photoroom_18b17af5-a7f7-427e-9cec-48ff0fc0a31d.png",
-        "logo_max_width": 150,
-        "menu": ""
+        "logo_max_width": 120
       }
     }
   },
