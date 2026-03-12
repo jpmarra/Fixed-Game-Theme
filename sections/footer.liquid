@@ -1,25 +1,45 @@
 <footer>
-  <div class="footer__copyright">
-    &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-  </div>
+  {% if section.settings.logo %}
+    <div class="footer__logo">
+      <a href="{{ routes.root_url }}">
+        {{ section.settings.logo | image_url: width: section.settings.logo_max_width | image_tag }}
+      </a>
+    </div>
+  {% endif %}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-    {% endfor %}
+  <div class="footer__bottom">
+    <div class="footer__copyright">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+    </div>
+
+    <div class="footer__links">
+      {% for link in section.settings.menu.links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
+    </div>
   </div>
 </footer>
 
 {% stylesheet %}
   footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-top: auto;
     padding: 2rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     opacity: 0.5;
     font-size: 0.75rem;
+  }
+  .footer__logo {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .footer__logo img {
+    max-width: 100%;
+    height: auto;
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   footer a {
     text-decoration: none;
@@ -35,6 +55,21 @@
 {
   "name": "t:general.footer",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:labels.logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "t:labels.logo_max_width",
+      "default": 150
+    },
     {
       "type": "link_list",
       "id": "menu",

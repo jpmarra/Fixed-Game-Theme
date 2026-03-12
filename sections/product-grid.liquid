@@ -21,7 +21,7 @@
 {% stylesheet %}
   .product-grid__hero {
     text-align: center;
-    padding: 3rem 0;
+    padding: 1rem 0 calc(1rem + var(--header-height, 4rem));
   }
   .product-grid__hero img {
     max-width: 400px;
@@ -29,8 +29,11 @@
   }
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(var(--grid-columns), 1fr);
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 0.8fr));
+    justify-content: center;
     gap: 1.5rem;
+    max-width: 80%;
+    margin: 0 auto;
   }
   @media (max-width: 999px) {
     .product-grid {
