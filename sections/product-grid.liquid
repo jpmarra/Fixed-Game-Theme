@@ -5,8 +5,9 @@
 {% endif %}
 
 <div class="product-grid" style="--grid-columns: {{ section.settings.columns_desktop }}">
-  {% paginate collections.all.products by 24 %}
-    {% for product in collections.all.products %}
+  {% assign grid_collection = section.settings.collection | default: collections.all %}
+  {% paginate grid_collection.products by 24 %}
+    {% for product in grid_collection.products %}
       {% render 'product-card', product: product %}
     {% endfor %}
 
@@ -20,12 +21,12 @@
 
 {% stylesheet %}
   .product-grid__hero {
-    text-align: center;
+    display: flex;
+    justify-content: center;
     padding: 1rem 0 calc(1rem + var(--header-height, 4rem));
   }
   .product-grid__hero img {
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: min(400px, 100%);
   }
   .product-grid {
     display: grid;
@@ -59,6 +60,11 @@
 {
   "name": "t:general.product_grid",
   "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:labels.collection"
+    },
     {
       "type": "image_picker",
       "id": "hero_logo",

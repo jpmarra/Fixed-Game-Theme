@@ -1,0 +1,3 @@
+[environments.development]
+store = "fixed-game-hc.myshopify.com"
+theme = "140974915632"

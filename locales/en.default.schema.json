@@ -39,6 +39,7 @@
     "accent": "Accent",
     "alignment": "Alignment",
     "background": "Background",
+    "collection": "Collection",
     "columns_desktop": "Columns on desktop",
     "foreground": "Foreground",
     "grid_gap": "Grid spacing",

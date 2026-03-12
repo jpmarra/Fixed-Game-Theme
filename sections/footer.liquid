@@ -6,48 +6,26 @@
       </a>
     </div>
   {% endif %}
-
-  <div class="footer__bottom">
-    <div class="footer__copyright">
-      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-    </div>
-
-    <div class="footer__links">
-      {% for link in section.settings.menu.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {% endfor %}
-    </div>
-  </div>
 </footer>
 
 {% stylesheet %}
   footer {
     margin-top: auto;
     padding: 2rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
     opacity: 0.5;
     font-size: 0.75rem;
   }
   .footer__logo {
-    text-align: center;
-    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
   }
   .footer__logo img {
     max-width: 100%;
     height: auto;
   }
-  .footer__bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
   footer a {
     text-decoration: none;
     color: var(--color-foreground);
-  }
-  .footer__links {
-    display: flex;
-    gap: 1rem;
   }
 {% endstylesheet %}
 
@@ -69,11 +47,6 @@
       "unit": "px",
       "label": "t:labels.logo_max_width",
       "default": 150
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
     }
   ]
 }
