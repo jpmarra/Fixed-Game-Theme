@@ -1,45 +1,162 @@
 {% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+  Product page — dark minimal layout with two-column grid on desktop.
+  Desktop: hover zoom lens on product images.
 {% endcomment %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
+<div class="product-layout">
+  <div class="product-images">
+    {% for image in product.images %}
+      <div class="product-image-wrap" data-zoom-src="{{ image | image_url: width: 1800 }}">
+        {{ image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'product-image' }}
+        <div class="product-zoom-lens"></div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="product-info">
+    <h1>{{ product.title }}</h1>
+    <p class="product-price">{{ product.price | money }}</p>
+    <div class="product-description">{{ product.description }}</div>
+
+    {% form 'product', product, data-product-form: '' %}
+      {% assign current_variant = product.selected_or_first_available_variant %}
+
+      <div class="product-form__actions">
+        {% if product.variants.size > 1 %}
+          <select name="id">
+            {% for variant in product.variants %}
+              <option
+                value="{{ variant.id }}"
+                {% if variant == current_variant %}
+                  selected="selected"
+                {% endif %}
+              >
+                {{ variant.title }} - {{ variant.price | money }}
+              </option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {% endif %}
+
+        <input type="hidden" name="quantity" value="1">
+        <input type="submit" value="{{ 'products.add_to_cart' | t }}">
+      </div>
+    {% endform %}
+  </div>
 </div>
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+{% stylesheet %}
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+  @media (min-width: 768px) {
+    .product-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+  .product-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .product-image-wrap {
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+  .product-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .product-zoom-lens {
+    display: none;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 1px solid var(--color-accent);
+    pointer-events: none;
+    background-repeat: no-repeat;
+    z-index: 1;
+  }
+  @media (min-width: 768px) {
+    .product-image-wrap:hover .product-zoom-lens {
+      display: block;
+    }
+  }
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .product-info h1 {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 1.75rem;
+  }
+  .product-price {
+    font-size: 1.25rem;
+    color: var(--color-accent);
+  }
+  .product-description {
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+  .product-form__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  @media (min-width: 768px) {
+    .product-form__actions {
+      flex-direction: row;
+    }
+  }
+  .product-form__actions select {
+    flex: 1;
+    padding: 0.75rem 2rem 0.75rem 0.75rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23e8e8e8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+  }
+  .product-form__actions input[type="submit"] {
+    flex: 1;
+  }
+{% endstylesheet %}
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+{% javascript %}
+  var ZOOM = 2.5;
+  var LENS = 250;
 
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
+  document.addEventListener('mousemove', function(e) {
+    var wrap = e.target.closest('.product-image-wrap[data-zoom-src]');
+    if (!wrap) return;
 
-    <input type="text" name="quantity" min="1" value="1">
+    var lens = wrap.querySelector('.product-zoom-lens');
+    if (!lens) return;
 
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
+    var rect = wrap.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+
+    var bgW = rect.width * ZOOM;
+    var bgH = rect.height * ZOOM;
+
+    if (!lens.style.backgroundImage) {
+      lens.style.backgroundImage = 'url(' + wrap.dataset.zoomSrc + ')';
+    }
+    lens.style.backgroundSize = bgW + 'px ' + bgH + 'px';
+    lens.style.backgroundPosition = -(x * ZOOM - LENS / 2) + 'px ' + -(y * ZOOM - LENS / 2) + 'px';
+    lens.style.left = (x - LENS / 2) + 'px';
+    lens.style.top = (y - LENS / 2) + 'px';
+  });
+{% endjavascript %}
 
 {% schema %}
 {

@@ -1,0 +1,77 @@
+{% doc %}
+  Renders a product card with image, title, and price.
+
+  @param {product} product - The product to render
+
+  @example
+  {% render 'product-card', product: product %}
+{% enddoc %}
+
+<a href="{{ product.url }}" class="product-card">
+  <div class="product-card__image">
+    {% if product.featured_image %}
+      {{ product.featured_image | image_url: width: 600, height: 600, crop: 'center' | image_tag: loading: 'lazy' }}
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+  <div class="product-card__info">
+    <span class="product-card__title">{{ product.title }}</span>
+    <span class="product-card__price">{{ product.price | money }}</span>
+  </div>
+</a>
+
+{% stylesheet %}
+  .product-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-foreground);
+    border: 1px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .product-card:hover {
+    color: var(--color-foreground);
+  }
+  .product-card:hover .product-card__title,
+  .product-card:hover .product-card__price {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .product-card__image {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .product-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+  }
+  .product-card:hover .product-card__image img {
+    filter: grayscale(1);
+  }
+  .product-card__image svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+  }
+  .product-card__info {
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .product-card__title {
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .product-card__price {
+    font-size: 0.9375rem;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+{% endstylesheet %}
