@@ -13,10 +13,14 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo": "shopify://shop_images/FIXED_GAME_LETTERING_color-Photoroom_96c5349e-0daf-4f63-a013-99c6611f4bcd.png",
+        "logo_max_width": 200,
+        "menu": ""
+      }
     }
   },
   "order": [
     "header"
-  ],
+  ]
 }
