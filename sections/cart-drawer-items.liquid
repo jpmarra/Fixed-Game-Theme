@@ -17,7 +17,7 @@
           <span class="cart-item__price">{{ item.final_line_price | money }}</span>
           <div class="cart-item__qty">
             <span>{{ 'cart.quantity' | t }}: {{ item.quantity }}</span>
-            <a href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}</a>
+            <a href="#" data-cart-remove="{{ item.variant.id }}">{{ 'cart.remove' | t }}</a>
           </div>
         </div>
       </div>

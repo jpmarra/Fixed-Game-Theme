@@ -141,6 +141,14 @@
       document.querySelectorAll('[data-product-form]').forEach(form => {
         form.addEventListener('submit', (e) => this.handleFormSubmit(e));
       });
+
+      document.addEventListener('click', (e) => {
+        const removeBtn = e.target.closest('[data-cart-remove]');
+        if (removeBtn) {
+          e.preventDefault();
+          this.removeItem(removeBtn.dataset.cartRemove);
+        }
+      });
     }
 
     open() {
@@ -166,6 +174,19 @@
         this.open();
       } catch (err) {
         console.error('Cart add error:', err);
+      }
+    }
+
+    async removeItem(variantId) {
+      try {
+        await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: variantId, quantity: 0 }),
+        });
+        await this.refresh();
+      } catch (err) {
+        console.error('Cart remove error:', err);
       }
     }
 
