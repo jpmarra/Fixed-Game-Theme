@@ -23,15 +23,18 @@
 
       <div class="product-form__actions">
         {% if product.variants.size > 1 %}
-          <select name="id">
+          <select name="id" data-variant-select>
             {% for variant in product.variants %}
               <option
                 value="{{ variant.id }}"
                 {% if variant == current_variant %}
                   selected="selected"
                 {% endif %}
+                {% unless variant.available %}
+                  disabled
+                {% endunless %}
               >
-                {{ variant.title }} - {{ variant.price | money }}
+                {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} — {{ 'products.sold_out' | t }}{% endunless %}
               </option>
             {% endfor %}
           </select>
@@ -40,7 +43,7 @@
         {% endif %}
 
         <input type="hidden" name="quantity" value="1">
-        <input type="submit" value="{{ 'products.add_to_cart' | t }}">
+        <input type="submit" value="{% if current_variant.available %}{{ 'products.add_to_cart' | t }}{% else %}{{ 'products.sold_out' | t }}{% endif %}" {% unless current_variant.available %}disabled{% endunless %} data-add-to-cart>
       </div>
     {% endform %}
   </div>
