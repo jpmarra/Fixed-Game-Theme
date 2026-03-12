@@ -5,15 +5,17 @@
     {% endfor %}
   </div>
 
-  <div class="header__logo">
-    <a href="{{ routes.root_url }}">
-      {% if section.settings.logo %}
-        {{ section.settings.logo | image_url: width: section.settings.logo_max_width | image_tag }}
-      {% else %}
-        {{ shop.name }}
-      {% endif %}
-    </a>
-  </div>
+  {% if template.name != 'index' %}
+    <div class="header__logo">
+      <a href="{{ routes.root_url }}">
+        {% if section.settings.logo %}
+          {{ section.settings.logo | image_url: width: section.settings.logo_max_width | image_tag }}
+        {% else %}
+          {{ shop.name }}
+        {% endif %}
+      </a>
+    </div>
+  {% endif %}
 
   <div class="header__icons">
     <button data-cart-drawer-open aria-label="{{ 'general.accessibility.close' | t }}">
@@ -25,10 +27,12 @@
 
 {% stylesheet %}
   header {
-    height: 5rem;
+    --header-height: 4rem;
+    height: var(--header-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0.5rem 1.5rem;
   }
   .header__logo a {
     text-decoration: none;
@@ -39,8 +43,9 @@
     font-weight: 700;
   }
   .header__logo img {
-    max-width: 100%;
-    height: auto;
+    max-height: 3rem;
+    width: auto;
+    object-fit: contain;
   }
   .header__menu,
   .header__icons {
