@@ -51,7 +51,8 @@
     "enter": "Enter"
   },
   "products": {
-    "add_to_cart": "Add to cart"
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out"
   },
   "search": {
     "title": "Search",
