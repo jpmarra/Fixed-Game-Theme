@@ -1,7 +1,7 @@
 <footer>
   {% if section.settings.logo %}
     <div class="footer__logo">
-      <a href="{{ routes.root_url }}">
+      <a href="{{ section.settings.logo_url | default: routes.root_url }}" target="_blank" rel="noopener">
         {{ section.settings.logo | image_url: width: section.settings.logo_max_width | image_tag }}
       </a>
     </div>
@@ -36,6 +36,11 @@
       "type": "image_picker",
       "id": "logo",
       "label": "t:labels.logo"
+    },
+    {
+      "type": "url",
+      "id": "logo_url",
+      "label": "t:labels.logo_url"
     },
     {
       "type": "range",

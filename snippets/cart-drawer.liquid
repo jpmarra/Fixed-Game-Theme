@@ -207,7 +207,7 @@
         const countEl = document.querySelector('[data-cart-count]');
         if (countEl) {
           countEl.textContent = cart.item_count;
-          countEl.hidden = cart.item_count === 0;
+          countEl.hidden = !cart.item_count;
         }
 
         const subtotalEl = document.querySelector('[data-cart-subtotal]');

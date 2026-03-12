@@ -49,6 +49,7 @@
     "layout_direction": "Layout direction",
     "logo": "Logo",
     "logo_max_width": "Logo max width",
+    "logo_url": "Logo link",
     "menu": "Menu",
     "customer_account_menu": "Customer account menu",
     "padding": "Padding",
