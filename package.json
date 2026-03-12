@@ -1,0 +1,22 @@
+{
+  "name": "fixed-game-store",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\" style=\"position: relative;\">\r   <br>\r     <img src=\"./assets/shoppy-x-ray.svg\" alt=\"logo\" width=\"200\">\r   <br>\r   Shopify Skeleton Theme\r </h1>",
+  "main": "index.js",
+  "scripts": {
+    "dev": "shopify theme dev -e development",
+    "pull": "shopify theme pull -e development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpmarra/Fixed-Game-Theme.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jpmarra/Fixed-Game-Theme/issues"
+  },
+  "homepage": "https://github.com/jpmarra/Fixed-Game-Theme#readme"
+}
